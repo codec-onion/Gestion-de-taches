@@ -1,6 +1,6 @@
 <script setup>
 import { ref, watch } from 'vue'
-import TaskListManager from '../../domain/usecases/TaskListManager'
+import { TaskListManager } from '../../domain/usecases/TaskListManager'
 
 const taskList = ref([])
 const sortedTaskList = ref(null)
@@ -14,14 +14,20 @@ async function fetchData() {
   }
 }
 fetchData()
-const sortByWording = () => {
-  sortedTaskList.value = TaskListManager.sortByWording(taskList.value)
+const sortAscendingOrderByWording = () => {
+  sortedTaskList.value = TaskListManager.sortAscendingOrderByWording(
+    taskList.value
+  )
 }
-const sortByStartTime = () => {
-  sortedTaskList.value = TaskListManager.sortByStartTime(taskList.value)
+const sortAscendingOrderByStartTime = () => {
+  sortedTaskList.value = TaskListManager.sortAscendingOrderByStartTime(
+    taskList.value
+  )
 }
-const sortByEndTime = () => {
-  sortedTaskList.value = TaskListManager.sortByEndTime(taskList.value)
+const sortAscendingOrderByEndTime = () => {
+  sortedTaskList.value = TaskListManager.sortAscendingOrderByEndTime(
+    taskList.value
+  )
 }
 const reset = () => {
   sortedTaskList.value = null
@@ -31,10 +37,24 @@ const reset = () => {
 <template>
   <main>
     <h2>Liste des tâches</h2>
-    <button @click="sortByWording">Trie croissant par libellé</button>
-    <button @click="sortByStartTime">Trie croissant par heure de début</button>
-    <button @click="sortByEndTime">Trie croissant par heure de fin</button>
-    <button @click="reset">Réinitialiser</button>
+
+    <div class="sort-button">
+      <h3>Trie par ordre croissant :</h3>
+      <button @click="sortAscendingOrderByWording(taskList)">
+        par libellé
+      </button>
+      <button @click="sortAscendingOrderByStartTime">par heure de début</button>
+      <button @click="sortAscendingOrderByEndTime">par heure de fin</button>
+    </div>
+
+    <div class="sort-button">
+      <h3>Tri par ordre décroissant :</h3>
+      <button @click="sortByWording">par libellé</button>
+      <button @click="sortByStartTime">par heure de début</button>
+      <button @click="sortByEndTime">par heure de fin</button>
+    </div>
+    <button @click="reset" class="reset">Réinitialiser</button>
+
     <table>
       <tr>
         <th scope="col">Libellé</th>
@@ -74,5 +94,16 @@ td {
 }
 th {
   border-bottom: 2px solid purple;
+}
+.sort-button {
+  display: flex;
+  justify-content: center;
+  margin-block: 20px;
+}
+.sort-button h2 {
+  margin-right: 10px;
+}
+.reset {
+  margin-bottom: 20px;
 }
 </style>
