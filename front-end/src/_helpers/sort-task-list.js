@@ -11,18 +11,19 @@ const sortByWording = (taskList) => {
   if (sortOrderWording.value === '') {
     sortOrderWording.value = '(ordre croissant)'
     sortedTaskList.value.sort((a, b) => {
-      return a.libelle.localeCompare(b.libelle)
+      return a.wording.localeCompare(b.wording)
     })
   } else if (sortOrderWording.value === '(ordre croissant)') {
     sortOrderWording.value = '(ordre décroissant)'
     sortedTaskList.value.sort((a, b) => {
-      return b.libelle.localeCompare(a.libelle)
+      return b.wording.localeCompare(a.wording)
     })
   } else {
     sortOrderWording.value = ''
     sortedTaskList.value = null
   }
 }
+
 const sortByStartTime = (taskList) => {
   sortOrderWording.value = sortOrderEndTime.value = ''
   sortedTaskList.value = JSON.parse(JSON.stringify(taskList))
@@ -30,16 +31,16 @@ const sortByStartTime = (taskList) => {
     sortOrderStartTime.value = '(ordre croissant)'
     sortedTaskList.value.sort((a, b) => {
       return (
-        parseInt(a.heureDebut.split(':').join('')) -
-        parseInt(b.heureDebut.split(':').join(''))
+        parseInt(a.startTime.split(':').join('')) -
+        parseInt(b.startTime.split(':').join(''))
       )
     })
   } else if (sortOrderStartTime.value === '(ordre croissant)') {
     sortOrderStartTime.value = '(ordre décroissant)'
     sortedTaskList.value.sort((a, b) => {
       return (
-        parseInt(b.heureDebut.split(':').join('')) -
-        parseInt(a.heureDebut.split(':').join(''))
+        parseInt(b.startTime.split(':').join('')) -
+        parseInt(a.startTime.split(':').join(''))
       )
     })
   } else {
@@ -47,6 +48,7 @@ const sortByStartTime = (taskList) => {
     sortedTaskList.value = null
   }
 }
+
 const sortByEndTime = (taskList) => {
   sortOrderWording.value = sortOrderStartTime.value = ''
   sortedTaskList.value = JSON.parse(JSON.stringify(taskList))
@@ -54,16 +56,16 @@ const sortByEndTime = (taskList) => {
     sortOrderEndTime.value = '(ordre croissant)'
     sortedTaskList.value.sort((a, b) => {
       return (
-        parseInt(a.heureFin.split(':').join('')) -
-        parseInt(b.heureFin.split(':').join(''))
+        parseInt(a.endTime.split(':').join('')) -
+        parseInt(b.endTime.split(':').join(''))
       )
     })
   } else if (sortOrderEndTime.value === '(ordre croissant)') {
     sortOrderEndTime.value = '(ordre décroissant)'
     sortedTaskList.value.sort((a, b) => {
       return (
-        parseInt(b.heureFin.split(':').join('')) -
-        parseInt(a.heureFin.split(':').join(''))
+        parseInt(b.endTime.split(':').join('')) -
+        parseInt(a.endTime.split(':').join(''))
       )
     })
   } else {

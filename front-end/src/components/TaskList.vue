@@ -1,3 +1,34 @@
+<template>
+  <table>
+    <tr>
+      <th scope="col" @click="sortByWording(taskList)">
+        Libellé
+        {{ sortOrderWording }}
+      </th>
+      <th scope="col" @click="sortByStartTime(taskList)">
+        Heure de début {{ sortOrderStartTime }}
+      </th>
+      <th scope="col" @click="sortByEndTime(taskList)">
+        Heure de fin {{ sortOrderEndTime }}
+      </th>
+    </tr>
+    <template v-if="!sortedTaskList">
+      <tr v-for="task in taskList" :key="task.id">
+        <td>{{ task.wording }}</td>
+        <td>{{ task.startTime }}</td>
+        <td>{{ task.endTime }}</td>
+      </tr>
+    </template>
+    <template v-else>
+      <tr v-for="task in sortedTaskList" :key="task.id">
+        <td>{{ task.wording }}</td>
+        <td>{{ task.startTime }}</td>
+        <td>{{ task.endTime }}</td>
+      </tr>
+    </template>
+  </table>
+</template>
+
 <script setup>
 import { ref } from 'vue'
 import {
@@ -23,36 +54,6 @@ async function fetchData() {
 }
 fetchData()
 </script>
-<template>
-  <table>
-    <tr>
-      <th scope="col" @click="sortByWording(taskList)">
-        Libellé
-        {{ sortOrderWording }}
-      </th>
-      <th scope="col" @click="sortByStartTime(taskList)">
-        Heure de début {{ sortOrderStartTime }}
-      </th>
-      <th scope="col" @click="sortByEndTime(taskList)">
-        Heure de fin {{ sortOrderEndTime }}
-      </th>
-    </tr>
-    <template v-if="!sortedTaskList">
-      <tr v-for="task in taskList" :key="task.id">
-        <td>{{ task.libelle }}</td>
-        <td>{{ task.heureDebut }}</td>
-        <td>{{ task.heureFin }}</td>
-      </tr>
-    </template>
-    <template v-else>
-      <tr v-for="task in sortedTaskList" :key="task.id">
-        <td>{{ task.libelle }}</td>
-        <td>{{ task.heureDebut }}</td>
-        <td>{{ task.heureFin }}</td>
-      </tr>
-    </template>
-  </table>
-</template>
 
 <style scoped>
 table {

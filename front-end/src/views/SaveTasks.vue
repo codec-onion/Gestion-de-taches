@@ -1,15 +1,17 @@
 <template>
   <main>
-    <h2>Formulaire de crétion de tâches</h2>
+    <h2>Formulaire de création de tâche</h2>
+    <CreateTaskForm />
   </main>
 </template>
 
+<script setup>
+import CreateTaskForm from '../components/CreateTaskForm.vue'
+</script>
+
 <style scoped>
-main {
+h2 {
+  margin-bottom: 20px;
   text-align: center;
-}
-.important {
-  color: red;
-  text-decoration: underline;
 }
 </style>

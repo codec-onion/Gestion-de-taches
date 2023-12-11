@@ -1,7 +1,3 @@
-<script setup>
-import TaskList from '../components/TaskList.vue'
-</script>
-
 <template>
   <main>
     <h2>Liste des tâches</h2>
@@ -9,6 +5,10 @@ import TaskList from '../components/TaskList.vue'
     <TaskList />
   </main>
 </template>
+
+<script setup>
+import TaskList from '../components/TaskList.vue'
+</script>
 
 <style scoped>
 h2 {

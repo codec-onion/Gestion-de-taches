@@ -1,122 +1,122 @@
 [
   {
     "id": 0,
-    "libelle": "Vérification des passeports",
-    "heureDebut": "8:00",
-    "heureFin": "9:00"
+    "wording": "Vérification des passeports",
+    "startTime": "8:00",
+    "endTime": "9:00"
   },
   {
     "id": 1,
-    "libelle": "Contrôle de sécurité des bagages",
-    "heureDebut": "9:15",
-    "heureFin": "11:15"
+    "wording": "Contrôle de sécurité des bagages",
+    "startTime": "9:15",
+    "endTime": "11:15"
   },
   {
     "id": 2,
-    "libelle": "Accueil des passagers à la porte d'embarquement",
-    "heureDebut": "10:30",
-    "heureFin": "11:30"
+    "wording": "Accueil des passagers à la porte d'embarquement",
+    "startTime": "10:30",
+    "endTime": "11:30"
   },
   {
     "id": 3,
-    "libelle": "Enregistrement des passagers",
-    "heureDebut": "11:45",
-    "heureFin": "13:45"
+    "wording": "Enregistrement des passagers",
+    "startTime": "11:45",
+    "endTime": "13:45"
   },
   {
     "id": 4,
-    "libelle": "Gestion des arrivées des vols",
-    "heureDebut": "13:00",
-    "heureFin": "14:00"
+    "wording": "Gestion des arrivées des vols",
+    "startTime": "13:00",
+    "endTime": "14:00"
   },
   {
     "id": 5,
-    "libelle": "Maintenance des aéronefs",
-    "heureDebut": "14:15",
-    "heureFin": "16:15"
+    "wording": "Maintenance des aéronefs",
+    "startTime": "14:15",
+    "endTime": "16:15"
   },
   {
     "id": 6,
-    "libelle": "Assistance aux personnes à mobilité réduite",
-    "heureDebut": "15:30",
-    "heureFin": "16:30"
+    "wording": "Assistance aux personnes à mobilité réduite",
+    "startTime": "15:30",
+    "endTime": "16:30"
   },
   {
     "id": 7,
-    "libelle": "Ravitaillement en carburant",
-    "heureDebut": "16:45",
-    "heureFin": "17:45"
+    "wording": "Ravitaillement en carburant",
+    "startTime": "16:45",
+    "endTime": "17:45"
   },
   {
     "id": 8,
-    "libelle": "Nettoyage des cabines d'avion",
-    "heureDebut": "8:30",
-    "heureFin": "9:30"
+    "wording": "Nettoyage des cabines d'avion",
+    "startTime": "8:30",
+    "endTime": "9:30"
   },
   {
     "id": 9,
-    "libelle": "Coordination des opérations de débarquement",
-    "heureDebut": "9:45",
-    "heureFin": "10:45"
+    "wording": "Coordination des opérations de débarquement",
+    "startTime": "9:45",
+    "endTime": "10:45"
   },
   {
     "id": 10,
-    "libelle": "Réapprovisionnement des salons d'attente",
-    "heureDebut": "11:00",
-    "heureFin": "12:00"
+    "wording": "Réapprovisionnement des salons d'attente",
+    "startTime": "11:00",
+    "endTime": "12:00"
   },
   {
     "id": 11,
-    "libelle": "Suivi des retards de vol",
-    "heureDebut": "12:15",
-    "heureFin": "13:15"
+    "wording": "Suivi des retards de vol",
+    "startTime": "12:15",
+    "endTime": "13:15"
   },
   {
     "id": 12,
-    "libelle": "Gestion des bagages égarés",
-    "heureDebut": "13:30",
-    "heureFin": "14:30"
+    "wording": "Gestion des bagages égarés",
+    "startTime": "13:30",
+    "endTime": "14:30"
   },
   {
     "id": 13,
-    "libelle": "Contrôle des émissions sonores des aéronefs",
-    "heureDebut": "14:45",
-    "heureFin": "15:45"
+    "wording": "Contrôle des émissions sonores des aéronefs",
+    "startTime": "14:45",
+    "endTime": "15:45"
   },
   {
     "id": 14,
-    "libelle": "Supervision des opérations de décollage",
-    "heureDebut": "16:00",
-    "heureFin": "17:00"
+    "wording": "Supervision des opérations de décollage",
+    "startTime": "16:00",
+    "endTime": "17:00"
   },
   {
     "id": 15,
-    "libelle": "Formation du personnel au premier secours",
-    "heureDebut": "8:15",
-    "heureFin": "9:15"
+    "wording": "Formation du personnel au premier secours",
+    "startTime": "8:15",
+    "endTime": "9:15"
   },
   {
     "id": 16,
-    "libelle": "Entretien des équipements de communication",
-    "heureDebut": "9:30",
-    "heureFin": "10:30"
+    "wording": "Entretien des équipements de communication",
+    "startTime": "9:30",
+    "endTime": "10:30"
   },
   {
     "id": 17,
-    "libelle": "Réparation des passerelles d'embarquement",
-    "heureDebut": "10:45",
-    "heureFin": "11:45"
+    "wording": "Réparation des passerelles d'embarquement",
+    "startTime": "10:45",
+    "endTime": "11:45"
   },
   {
     "id": 18,
-    "libelle": "Préparation des rapports d'incident",
-    "heureDebut": "12:00",
-    "heureFin": "13:00"
+    "wording": "Préparation des rapports d'incident",
+    "startTime": "12:00",
+    "endTime": "13:00"
   },
   {
     "id": 19,
-    "libelle": "Évaluation de la satisfaction des passagers",
-    "heureDebut": "13:15",
-    "heureFin": "14:15"
+    "wording": "Évaluation de la satisfaction des passagers",
+    "startTime": "13:15",
+    "endTime": "14:15"
   }
 ]
