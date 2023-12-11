@@ -36,7 +36,12 @@ const createTask = () => {
   const comparisonTime =
     parseInt(task.value.endTime.split(':').join('')) -
     parseInt(task.value.startTime.split(':').join(''))
-  if (wordingTest && startTimeTest && endTimeTest && comparisonTime === 1) {
+  if (
+    wordingTest &&
+    startTimeTest &&
+    endTimeTest &&
+    Math.sign(comparisonTime) === 1
+  ) {
     console.log(task.value)
   } else {
     console.log('Regex refusée!')
@@ -45,10 +50,6 @@ const createTask = () => {
 </script>
 
 <style scoped>
-h2 {
-  margin-bottom: 20px;
-  text-align: center;
-}
 form {
   width: 300px;
   margin-inline: auto;
@@ -56,7 +57,6 @@ form {
 form div {
   display: flex;
   justify-content: space-between;
-  align-items: flex-start;
   margin-bottom: 20px;
 }
 form div label {

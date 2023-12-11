@@ -1,27 +1,27 @@
 [
   {
     "id": 0,
-    "prenom": "Jean",
-    "nom": "Dupont"
+    "firstName": "Jean",
+    "lastName": "Dupont"
   },
   {
     "id": 1,
-    "prenom": "Marie",
-    "nom": "Martin"
+    "firstName": "Marie",
+    "lastName": "Martin"
   },
   {
     "id": 2,
-    "prenom": "Pierre",
-    "nom": "Lefevre"
+    "firstName": "Pierre",
+    "lastName": "Lefevre"
   },
   {
     "id": 3,
-    "prenom": "Sophie",
-    "nom": "Dufresne"
+    "firstName": "Sophie",
+    "lastName": "Dufresne"
   },
   {
     "id": 4,
-    "prenom": "Luc",
-    "nom": "Gagnon"
+    "firstName": "Luc",
+    "lastName": "Gagnon"
   }
 ]
