@@ -7,14 +7,15 @@
       </div>
       <div>
         <label for="start-time">Heure de début:</label>
-        <input type="time" id="start-time" v-model="task.startTime" />
+        <input type="datetime-local" id="start-time" v-model="task.startTime" />
       </div>
       <div>
         <label for="end-time">Heure de fin:</label>
-        <input type="time" id="end-time" v-model="task.endTime" />
+        <input type="datetime-local" id="end-time" v-model="task.endTime" />
       </div>
       <button type="submit">Créer une nouvelle tâche</button>
     </form>
+    {{ errMsg }}
   </main>
 </template>
 
@@ -27,24 +28,21 @@ const task = ref({
   endTime: '',
 })
 
+const errMsg = ref('')
+
 const createTask = () => {
-  const wordingRegex = /^[a-zA-Z0-9À-ÿ\s]+$/
-  const timeRegex = /^\d{2}:\d{2}$/
-  const wordingTest = wordingRegex.test(task.value.wording)
-  const startTimeTest = timeRegex.test(task.value.startTime)
-  const endTimeTest = timeRegex.test(task.value.endTime)
+  const wordingRegex = /^[a-zA-Z0-9À-ÿ\s]+\S$/
+  const wordingIsValid = wordingRegex.test(task.value.wording)
   const comparisonTime =
-    parseInt(task.value.endTime.split(':').join('')) -
-    parseInt(task.value.startTime.split(':').join(''))
-  if (
-    wordingTest &&
-    startTimeTest &&
-    endTimeTest &&
-    Math.sign(comparisonTime) === 1
-  ) {
+    new Date(task.value.endTime) - new Date(task.value.startTime)
+  if (Math.sign(comparisonTime) === 1 && wordingIsValid) {
     console.log(task.value)
+    errMsg.value = ''
+  } else if (!wordingIsValid) {
+    errMsg.value =
+      "Le nom ne doit pas contenir de caractères spéciaux ni d'espace à la fin."
   } else {
-    console.log('Regex refusée!')
+    errMsg.value = 'La date de fin doit se situer après la date de début.'
   }
 }
 </script>
