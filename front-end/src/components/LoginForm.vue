@@ -30,7 +30,7 @@ const sendLogin = () => {
       localStorage.setItem('token', res.data.token)
       router.push('/')
     })
-    .catch((error) => console.log(error))
+    .catch((error) => console.log(error.data.message))
 }
 
 // const login = () => {

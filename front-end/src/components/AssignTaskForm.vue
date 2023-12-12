@@ -25,6 +25,7 @@
       </div>
       <button type="submit">Assigner la tâche</button>
     </form>
+    <p>{{ errorMsg }}</p>
   </main>
 </template>
 
@@ -39,21 +40,22 @@ const employeeAndTaskId = ref({
   employeeId: '',
   taskId: '',
 })
+const errorMsg = ref('')
 
 getAllTasks()
   .then((res) => (taskList.value = res.data))
-  .catch((error) => console.log(error))
+  .catch((error) => console.log(error.data.message))
 
 getAllEmployees()
   .then((res) => {
     employees.value = res.data
   })
-  .catch((error) => console.log(error))
+  .catch((error) => console.log(error.data.message))
 
 const sendToServer = () => {
   assignTask(employeeAndTaskId.value)
     .then((res) => console.log(res.data))
-    .catch((error) => console.log(error))
+    .catch((error) => (errorMsg.value = error.data.message))
 }
 </script>
 

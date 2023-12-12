@@ -1,6 +1,6 @@
 <template>
   <main>
-    <form @submit.prevent="checkTask">
+    <form @submit.prevent="send">
       <div>
         <label for="wording">Libellé:</label>
         <input type="text" id="wording" v-model="task.wording" />
@@ -30,25 +30,12 @@ const task = ref({
 })
 const infoMsg = ref('')
 
-const checkTask = () => {
-  const wordingRegex = /^[a-zA-Z0-9À-ÿ\s]+\S$/
-  const wordingIsValid = wordingRegex.test(task.value.wording)
-  const comparisonTime =
-    new Date(task.value.endTime) - new Date(task.value.startTime)
-
-  if (Math.sign(comparisonTime) === 1 && wordingIsValid) {
-    createTask(task.value)
-      .then((res) => (infoMsg.value = res.data.message))
-      .catch((error) => {
-        infoMsg.value = error
-        console.log(error)
-      })
-  } else if (!wordingIsValid) {
-    infoMsg.value =
-      "Le nom ne doit pas contenir de caractères spéciaux ni d'espace à la fin."
-  } else {
-    infoMsg.value = 'La date de fin doit se situer après la date de début.'
-  }
+const send = () => {
+  createTask(task.value)
+    .then((res) => (infoMsg.value = res.data.message))
+    .catch((error) => {
+      infoMsg.value = error.data.message
+    })
 }
 </script>
 

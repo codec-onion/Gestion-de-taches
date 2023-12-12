@@ -11,3 +11,7 @@ export const createTask = (task) => {
 export const assignTask = (employeeAndTaskId) => {
   return Axios.put('/task/assign', employeeAndTaskId)
 }
+
+export const deleteTask = (taskId) => {
+  return Axios.delete(`/task/${taskId}`)
+}

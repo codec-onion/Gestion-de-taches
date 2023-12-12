@@ -1,5 +1,5 @@
 <template>
-  <table>
+  <table v-if="taskList.length > 0">
     <thead>
       <th scope="col" @click="sortByWording(taskList)">
         Libellé
@@ -18,7 +18,9 @@
         <td>{{ task.wording }}</td>
         <td>{{ task.startTime }}</td>
         <td>{{ task.endTime }}</td>
-        <td><button :value="task._id" @click="test($event)">X</button></td>
+        <td>
+          <button :value="task._id" @click="deleteTaskEvent($event)">X</button>
+        </td>
       </tr>
     </template>
     <template v-else>
@@ -26,15 +28,21 @@
         <td>{{ task.wording }}</td>
         <td>{{ task.startTime }}</td>
         <td>{{ task.endTime }}</td>
-        <td><button :value="task._id" @click="test($event)">X</button></td>
+        <td>
+          <button :value="task._id" @click="deleteTaskEvent($event)">X</button>
+        </td>
       </tr>
     </template>
   </table>
+  <p v-else>
+    Pas encore de tâches créées. Vous pouvez en créer une en cliquant sur
+    "Enregistrer une tâche".
+  </p>
 </template>
 
 <script setup>
 import { ref, watch } from 'vue'
-import { getAllTasks } from '../_services/task.services'
+import { getAllTasks, deleteTask } from '../_services/task.services'
 
 const taskList = ref([])
 const sortedTaskList = ref(null)
@@ -44,7 +52,7 @@ const sortOrderEndTime = ref('')
 
 getAllTasks()
   .then((res) => (taskList.value = res.data))
-  .catch((error) => console.log(error))
+  .catch((error) => console.log(error.data.message))
 
 watch(taskList, (newValue) => {
   for (let task of newValue) {
@@ -53,8 +61,9 @@ watch(taskList, (newValue) => {
   }
 })
 
-const test = (e) => {
-  console.log(e.target.value)
+const deleteTaskEvent = (e) => {
+  deleteTask(e.target.value)
+  window.location.reload()
 }
 
 const sortByWording = (taskList) => {
@@ -132,8 +141,13 @@ th {
   border-bottom: 2px solid purple;
   cursor: pointer;
 }
+th:nth-child(2),
+th:nth-child(3) {
+  max-width: 150px;
+}
 th:last-child {
   width: 90px;
+  cursor: auto;
 }
 
 .sort-button {

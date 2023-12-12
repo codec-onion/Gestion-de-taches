@@ -1,4 +1,5 @@
 import axios from 'axios'
+import router from '@/router'
 
 const Axios = axios.create({
   baseURL: 'http://localhost:3000',
@@ -11,5 +12,19 @@ Axios.interceptors.request.use((request) => {
   }
   return request
 })
+
+Axios.interceptors.response.use(
+  (response) => {
+    return response
+  },
+  (error) => {
+    if (error.response.status == 401) {
+      localStorage.removeItem('token')
+      router.push('/login')
+    } else {
+      return Promise.reject(error.response)
+    }
+  }
+)
 
 export default Axios

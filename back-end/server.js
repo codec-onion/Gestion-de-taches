@@ -7,8 +7,8 @@ app.set('port', port)
 const server = http.createServer(app)
 
 server.on('listening', () => {
-  const bind = 'port ' + port
-  console.log('Listening on ' + bind)
+  const portDisplay = 'port ' + port
+  console.log('Listening on ' + portDisplay)
 })
 
 server.listen(port)

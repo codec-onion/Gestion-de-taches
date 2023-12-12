@@ -1,40 +1,29 @@
-function checkTaskOverlap(tasks, taskAdd) {
-  for (let i = 0; i < tasks.length; i++) {
-    const task1 = taskAdd
-    const task2 = tasks[i]
-
-    const startTime1 = parseInt(taskAdd.startTime.split(':').join(''))
-    const endTime1 = parseInt(taskAdd.endTime.split(':').join(''))
-    const startTime2 = parseInt(tasks[i].startTime.split(':').join(''))
-    const endTime2 = parseInt(tasks[i].endTime.split(':').join(''))
+function checkTaskOverlap(taskList, taskAdd) {
+  for (let i = 0; i < taskList.length; i++) {
+    const startTime1 = new Date(taskAdd.startTime)
+    const endTime1 = new Date(taskAdd.endTime)
+    const startTime2 = new Date(taskList[i].startTime)
+    const endTime2 = new Date(taskList[i].endTime)
 
     if (endTime1 > startTime2 && startTime1 < endTime2) {
-      console.log(
-        `Chevauchement trouvé entre "${task1.wording}" et "${task2.wording}"`
-      )
       return false
     }
   }
-  console.log('Aucun chevauchement trouvé.')
   return true
 }
 
 const checkTotalTaskTime = (taskList, taskAdd) => {
   const maxTotal = 1000 * 3600 * 8
   let sum = 0
-  for (let task of taskList) {
-    sum +=
-      new Date(`2000-01-01T${task.endTime}`) -
-      new Date(`2000-01-01T${task.startTime}`)
+  if (taskList.length > 0) {
+    for (let task of taskList) {
+      sum += new Date(task.endTime) - new Date(task.startTime)
+    }
   }
-  sum +=
-    new Date(`2000-01-01T${taskAdd.endTime}`) -
-    new Date(`2000-01-01T${taskAdd.startTime}`)
+  sum += new Date(taskAdd.endTime) - new Date(taskAdd.startTime)
   if (sum > maxTotal) {
-    console.log('Temps de travail maximum dépassé!')
     return false
   }
-  console.log('Tâches ajoutée.')
   return true
 }
 
