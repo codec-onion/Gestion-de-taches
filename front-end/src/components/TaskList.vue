@@ -1,64 +1,61 @@
 <template>
   <table>
-    <tr>
+    <thead>
       <th scope="col" @click="sortByWording(taskList)">
         Libellé
         {{ sortOrderWording }}
       </th>
       <th scope="col" @click="sortByStartTime(taskList)">
-        Heure de début {{ sortOrderStartTime }}
+        Début {{ sortOrderStartTime }}
       </th>
       <th scope="col" @click="sortByEndTime(taskList)">
-        Heure de fin {{ sortOrderEndTime }}
+        Fin {{ sortOrderEndTime }}
       </th>
-    </tr>
+      <th scope="col">Supprimer</th>
+    </thead>
     <template v-if="!sortedTaskList">
-      <tr v-for="task in taskList" :key="task.id">
+      <tr v-for="task in taskList" :key="task._id" :class="task._id">
         <td>{{ task.wording }}</td>
         <td>{{ task.startTime }}</td>
         <td>{{ task.endTime }}</td>
+        <td><button :value="task._id" @click="test($event)">X</button></td>
       </tr>
     </template>
     <template v-else>
-      <tr v-for="task in sortedTaskList" :key="task.id">
+      <tr v-for="task in sortedTaskList" :key="task._id" :class="task._id">
         <td>{{ task.wording }}</td>
         <td>{{ task.startTime }}</td>
         <td>{{ task.endTime }}</td>
+        <td><button :value="task._id" @click="test($event)">X</button></td>
       </tr>
     </template>
   </table>
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
+import { getAllTasks } from '../_services/task.services'
 
 const taskList = ref([])
-
-async function fetchData() {
-  try {
-    const response = await fetch('http://localhost:5173/task-with-date.json')
-    const data = await response.json()
-    taskList.value = data
-  } catch (error) {
-    console.error(error)
-  }
-}
-
-async function formatDate() {
-  await fetchData()
-  const date = new Date(taskList.value[0].startTime)
-  console.log(date.toLocaleDateString('fr-FR'))
-  for (let task of taskList.value) {
-    task.startTime = task.startTime.split('T').join(' ')
-    task.endTime = task.endTime.split('T').join(' ')
-  }
-}
-formatDate()
-
 const sortedTaskList = ref(null)
 const sortOrderWording = ref('')
 const sortOrderStartTime = ref('')
 const sortOrderEndTime = ref('')
+
+getAllTasks()
+  .then((res) => (taskList.value = res.data))
+  .catch((error) => console.log(error))
+
+watch(taskList, (newValue) => {
+  for (let task of newValue) {
+    task.startTime = task.startTime.split('T').join(' ')
+    task.endTime = task.endTime.split('T').join(' ')
+  }
+})
+
+const test = (e) => {
+  console.log(e.target.value)
+}
 
 const sortByWording = (taskList) => {
   sortOrderStartTime.value = sortOrderEndTime.value = ''
@@ -77,9 +74,6 @@ const sortByWording = (taskList) => {
     sortOrderWording.value = ''
     sortedTaskList.value = null
   }
-  sortedTaskList.value.startTime = sortedTaskList.value.startTime
-    .split('T')
-    .join(' ')
 }
 
 const sortByStartTime = (taskList) => {
@@ -138,6 +132,10 @@ th {
   border-bottom: 2px solid purple;
   cursor: pointer;
 }
+th:last-child {
+  width: 90px;
+}
+
 .sort-button {
   display: flex;
   justify-content: center;

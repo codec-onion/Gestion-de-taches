@@ -1,48 +1,53 @@
 <template>
   <main>
-    <form @submit.prevent="createTask">
+    <form @submit.prevent="checkTask">
       <div>
         <label for="wording">Libellé:</label>
         <input type="text" id="wording" v-model="task.wording" />
       </div>
       <div>
-        <label for="start-time">Heure de début:</label>
+        <label for="start-time">Début:</label>
         <input type="datetime-local" id="start-time" v-model="task.startTime" />
       </div>
       <div>
-        <label for="end-time">Heure de fin:</label>
+        <label for="end-time">Fin:</label>
         <input type="datetime-local" id="end-time" v-model="task.endTime" />
       </div>
       <button type="submit">Créer une nouvelle tâche</button>
     </form>
-    {{ errMsg }}
+    {{ infoMsg }}
   </main>
 </template>
 
 <script setup>
 import { ref } from 'vue'
+import { createTask } from '../_services/task.services'
 
 const task = ref({
   wording: '',
   startTime: '',
   endTime: '',
 })
+const infoMsg = ref('')
 
-const errMsg = ref('')
-
-const createTask = () => {
+const checkTask = () => {
   const wordingRegex = /^[a-zA-Z0-9À-ÿ\s]+\S$/
   const wordingIsValid = wordingRegex.test(task.value.wording)
   const comparisonTime =
     new Date(task.value.endTime) - new Date(task.value.startTime)
+
   if (Math.sign(comparisonTime) === 1 && wordingIsValid) {
-    console.log(task.value)
-    errMsg.value = ''
+    createTask(task.value)
+      .then((res) => (infoMsg.value = res.data.message))
+      .catch((error) => {
+        infoMsg.value = error
+        console.log(error)
+      })
   } else if (!wordingIsValid) {
-    errMsg.value =
+    infoMsg.value =
       "Le nom ne doit pas contenir de caractères spéciaux ni d'espace à la fin."
   } else {
-    errMsg.value = 'La date de fin doit se situer après la date de début.'
+    infoMsg.value = 'La date de fin doit se situer après la date de début.'
   }
 }
 </script>

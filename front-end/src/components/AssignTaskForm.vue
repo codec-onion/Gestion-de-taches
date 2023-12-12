@@ -7,8 +7,8 @@
           <option value="" disabled>Choisissez un employé.e</option>
           <option
             v-for="employee of employees"
-            :key="employee.id"
-            :value="employee.id"
+            :key="employee._id"
+            :value="employee._id"
           >
             {{ employee.firstName + ' ' + employee.lastName }}
           </option>
@@ -18,7 +18,7 @@
         <label for="tache">Sélectionnez une tâche :</label>
         <select v-model="employeeAndTaskId.taskId" id="tache">
           <option value="" disabled>Choisissez une tâche</option>
-          <option v-for="task of taskList" :key="task.id" :value="task.id">
+          <option v-for="task of taskList" :key="task._id" :value="task._id">
             {{ task.wording }}
           </option>
         </select>
@@ -30,42 +30,31 @@
 
 <script setup>
 import { ref } from 'vue'
+import { getAllTasks, assignTask } from '../_services/task.services'
+import { getAllEmployees } from '../_services/employee.service'
 
 const employees = ref([])
-
 const taskList = ref([])
-
 const employeeAndTaskId = ref({
   employeeId: '',
   taskId: '',
 })
 
-async function fetchDataTask() {
-  try {
-    const response = await fetch('http://localhost:5173/tasks.json')
-    const data = await response.json()
-    taskList.value = data
-  } catch (error) {
-    console.error(error)
-  }
-}
+getAllTasks()
+  .then((res) => (taskList.value = res.data))
+  .catch((error) => console.log(error))
 
-async function fetchDataEmployees() {
-  try {
-    const response = await fetch('http://localhost:5173/employees.json')
-    const data = await response.json()
-    employees.value = data
-  } catch (error) {
-    console.error(error)
-  }
-}
+getAllEmployees()
+  .then((res) => {
+    employees.value = res.data
+  })
+  .catch((error) => console.log(error))
 
 const sendToServer = () => {
-  console.log(employeeAndTaskId.value)
+  assignTask(employeeAndTaskId.value)
+    .then((res) => console.log(res.data))
+    .catch((error) => console.log(error))
 }
-
-fetchDataEmployees()
-fetchDataTask()
 </script>
 
 <style scoped>

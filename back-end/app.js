@@ -1,7 +1,9 @@
 const express = require('express')
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config()
-const employeesRoutes = require("./routes/employeesRoutes")
+const userRoutes = require("./routes/userRoutes")
+const employeeRoutes = require("./routes/employeeRoutes")
+const taskRoutes = require("./routes/taskRoutes")
 
 mongoose
   .connect(`${process.env.MONGODB_URL}`)
@@ -11,14 +13,16 @@ mongoose
 const app = express()
 
 app
-  .use(express.json()).use((req, res, next) => {
+  .use(express.json())
+  .use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*')
     res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With, Content, Accept, Content-Type, Authorization')
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE')
     next()
   })
-  .use("/", employeesRoutes)
-  // .use("/", taskRoutes)
+  .use("/", userRoutes)
+  .use("/", employeeRoutes)
+  .use("/", taskRoutes)
 
 
 module.exports = app
