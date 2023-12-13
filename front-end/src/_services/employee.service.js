@@ -1,7 +1,5 @@
 import Axios from './axios.services'
 
-const getAllEmployees = () => {
+export const getAllEmployees = () => {
   return Axios.get('/employee')
 }
-
-export { getAllEmployees }

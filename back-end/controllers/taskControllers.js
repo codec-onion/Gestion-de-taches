@@ -8,6 +8,13 @@ exports.getAllTasks = (req, res, next) => {
     .catch(error => res.status(404).json(error))
 }
 
+exports.getAssignedTask = (req, res, next) => {
+  const employeeId = req.params.id
+  TaskModel.find({ employeeId: { $in: employeeId } })
+  .then((tasks) => res.status(200).json(tasks))
+  .catch((error) => res.status(500).json(error))
+}
+
 exports.createTask = (req, res, next) => {
   const checkedTaskInfo = checkTaskInfo(req.body)
   if(checkedTaskInfo.length > 0) {
@@ -19,39 +26,40 @@ exports.createTask = (req, res, next) => {
   })
   task.save()
     .then(() => res.status(200).json({message: "Tâche créée avec succès."}))
-    .catch((error) => res.status(404).json(error))
+    .catch((error) => res.status(500).json(error))
 }
 
 exports.assignTask = async (req, res, next) => {
-  let taskAdd
-  
-  await TaskModel.findOne({ _id: req.body.taskId })
-  .then(task => taskAdd = task)
-  .catch(error => res.status(500).json(error))
-  
-  let assignedTasks
 
-  await TaskModel.find({ employeeId: { $in: [req.body.employeeId] } })
-  .then(tasks => {
-    const taskAlreadyAssigned = tasks.find(task => task.id === req.body.taskId)
+  try {
+    const currentEmployeeId = req.body.employeeId
+    const taskToBeAdded = await TaskModel.findOne({ _id: req.body.taskId })
+    const assignedTasks = await TaskModel.find({ employeeId: { $in: currentEmployeeId } })
+
+    const taskAlreadyAssigned = assignedTasks.find(task => task.id === taskToBeAdded.id)
     if (!!taskAlreadyAssigned) {
-      return res.status(403).json({message: "Cette tâche est déjà assignée à cet employé."})
-    }
-    assignedTasks = filterDateSameDay(tasks)
-  })
-  .catch(error => res.status(500).json(error))
-  
-  if (assignedTasks.length === 0) {
-    if (!checkTotalTaskTime(assignedTasks, taskAdd)) {
-      return res.status(403).json({ message: "vous ne pouvez pas assigner cette tâche à l'employé car cela dépasse les 8 heures de travail autorisé." })
+      return res.status(403).json({ message: "Cette tâche est déjà assignée à cet employé." })
     }
 
-    taskAdd.employeeId.push(req.body.employeeId)
-    TaskModel.updateOne({ _id: req.body.taskId }, { employeeId: taskAdd.employeeId })
-      .then(() => res.status(200).json({ message: "Tâche assignée" }))
-      .catch(error => res.status(500).json(error))
-  } else {
-    
+    const assignedTasksSameDay = filterDateSameDay(assignedTasks, taskToBeAdded)
+    const checkedTaskOverlap = checkTaskOverlap(assignedTasksSameDay, taskToBeAdded)
+    const checkedTotalTaskTime = checkTotalTaskTime(assignedTasksSameDay, taskToBeAdded)
+
+    if (!checkedTaskOverlap.isValid) {
+      return res.status(403).json({ message: checkedTaskOverlap.errorMsg })
+    } 
+    if (!checkedTotalTaskTime) {
+      return res.status(403).json({ 
+        message: "Vous ne pouvez pas assigner cette tâche à l'employé car cela dépasse le temps autorisé par jour de 8h." 
+      })
+    }
+
+    taskToBeAdded.employeeId.push(currentEmployeeId)
+    await TaskModel.updateOne({ _id: req.body.taskId }, { employeeId: taskToBeAdded.employeeId })
+
+    return res.status(200).json({ message: "Tâche assignée." })
+  } catch (error) {
+    return res.status(500).json(error)
   }
 }
   

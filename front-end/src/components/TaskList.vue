@@ -5,12 +5,8 @@
         Libellé
         {{ sortOrderWording }}
       </th>
-      <th scope="col" @click="sortByStartTime(taskList)">
-        Début {{ sortOrderStartTime }}
-      </th>
-      <th scope="col" @click="sortByEndTime(taskList)">
-        Fin {{ sortOrderEndTime }}
-      </th>
+      <th scope="col" @click="sortByStartTime(taskList)">Début {{ sortOrderStartTime }}</th>
+      <th scope="col" @click="sortByEndTime(taskList)">Fin {{ sortOrderEndTime }}</th>
       <th scope="col">Supprimer</th>
     </thead>
     <template v-if="!sortedTaskList">
@@ -34,10 +30,7 @@
       </tr>
     </template>
   </table>
-  <p v-else>
-    Pas encore de tâches créées. Vous pouvez en créer une en cliquant sur
-    "Enregistrer une tâche".
-  </p>
+  <p v-else>Pas encore de tâches créées. Vous pouvez en créer une en cliquant sur "Enregistrer une tâche".</p>
 </template>
 
 <script setup>

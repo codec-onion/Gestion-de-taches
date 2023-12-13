@@ -17,7 +17,16 @@ const filterDateSameDay = (taskList, taskAdd) => {
 }
 
 function checkTaskOverlap(taskList, taskAdd) {
-  
+  const returnValue = {
+    isValid: false,
+    errorMsg: ""
+  }
+
+  if(taskList.length === 0) {
+    returnValue.isValid = true
+    return returnValue
+  }
+
   for (let i = 0; i < taskList.length; i++) {
     const startTime1 = new Date(taskAdd.startTime)
     const endTime1 = new Date(taskAdd.endTime)
@@ -25,10 +34,14 @@ function checkTaskOverlap(taskList, taskAdd) {
     const endTime2 = new Date(taskList[i].endTime)
     
     if (endTime1 > startTime2 && startTime1 < endTime2) {
-      return false
+      const formatedStartTime2 = formatHoursMinutes(startTime2)
+      const formatedEndTime2 = formatHoursMinutes(endTime2)
+      returnValue.errorMsg = `Une tâche est déjà prévue dans cette plage horaire ce jour-ci:  ${taskList[i].wording} qui a lieu entre ${formatedStartTime2} et ${formatedEndTime2}`
+      return returnValue
     }
   }
-  return true
+  returnValue.isValid = true
+  return returnValue
 }
 
 const checkTotalTaskTime = (taskList, taskAdd) => {
@@ -44,6 +57,34 @@ const checkTotalTaskTime = (taskList, taskAdd) => {
     return false
   }
   return true
+}
+
+const formatHoursMinutes = (date) => {
+const hours = date.getHours()
+const minutes = date.getMinutes()
+
+let formated
+let formatedHours
+let formatedMinutes
+
+  if(hours >= 0 && hours <= 9){
+    formatedHours = `0${hours}`
+  }
+  if(minutes >= 0 && minutes <= 9) {
+    formatedMinutes = `0${minutes}`
+  }
+  if(formatedHours && !formatedMinutes){
+    formated = `${formatedHours}:${minutes}`
+  } else if (!formatedHours && formatedMinutes){
+    formated = `${hours}:${formatedMinutes}`
+  } else if (formatedHours && formatedMinutes) {
+    formated = `${formatedHours}:${formatedMinutes}`
+  }
+  if(formated) {
+    return formated
+  } else {
+    return `${hours}:${minutes}`
+  }
 }
 
 module.exports = {

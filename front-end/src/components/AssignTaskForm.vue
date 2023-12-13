@@ -5,11 +5,7 @@
         <label for="employee">Sélectionnez un employé :</label>
         <select v-model="employeeAndTaskId.employeeId" id="employee">
           <option value="" disabled>Choisissez un employé.e</option>
-          <option
-            v-for="employee of employees"
-            :key="employee._id"
-            :value="employee._id"
-          >
+          <option v-for="employee of employees" :key="employee._id" :value="employee._id">
             {{ employee.firstName + ' ' + employee.lastName }}
           </option>
         </select>
@@ -25,37 +21,25 @@
       </div>
       <button type="submit">Assigner la tâche</button>
     </form>
-    <p>{{ errorMsg }}</p>
+    <p>{{ infoMsg }}</p>
   </main>
 </template>
 
 <script setup>
 import { ref } from 'vue'
-import { getAllTasks, assignTask } from '../_services/task.services'
-import { getAllEmployees } from '../_services/employee.service'
+import { assignTask } from '../_services/task.services'
 
-const employees = ref([])
-const taskList = ref([])
+const { props } = defineProps(['taskList', 'employees'])
 const employeeAndTaskId = ref({
   employeeId: '',
   taskId: '',
 })
-const errorMsg = ref('')
-
-getAllTasks()
-  .then((res) => (taskList.value = res.data))
-  .catch((error) => console.log(error.data.message))
-
-getAllEmployees()
-  .then((res) => {
-    employees.value = res.data
-  })
-  .catch((error) => console.log(error.data.message))
+const infoMsg = ref('')
 
 const sendToServer = () => {
   assignTask(employeeAndTaskId.value)
-    .then((res) => console.log(res.data))
-    .catch((error) => (errorMsg.value = error.data.message))
+    .then((res) => (infoMsg.value = res.data.message))
+    .catch((error) => (infoMsg.value = error.data.message))
 }
 </script>
 
