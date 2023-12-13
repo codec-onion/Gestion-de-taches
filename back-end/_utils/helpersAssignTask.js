@@ -33,7 +33,7 @@ function checkTaskOverlap(taskList, taskAdd) {
     const startTime2 = new Date(taskList[i].startTime)
     const endTime2 = new Date(taskList[i].endTime)
     
-    if (endTime1 > startTime2 && startTime1 < endTime2) {
+    if (endTime1 > startTime2 && startTime1 < endTime2 || startTime1 === startTime2 && endTime1 === endTime2) {
       const formatedStartTime2 = formatHoursMinutes(startTime2)
       const formatedEndTime2 = formatHoursMinutes(endTime2)
       returnValue.errorMsg = `Une tâche est déjà prévue dans cette plage horaire ce jour-ci:  ${taskList[i].wording} qui a lieu entre ${formatedStartTime2} et ${formatedEndTime2}`

@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <form @submit.prevent="send">
       <div>
         <label for="wording">Libellé:</label>
@@ -16,7 +16,7 @@
       <button type="submit">Créer une nouvelle tâche</button>
     </form>
     {{ infoMsg }}
-  </main>
+  </div>
 </template>
 
 <script setup>

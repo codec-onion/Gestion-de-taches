@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <form @submit.prevent="sendToServer">
       <div>
         <label for="employee">Sélectionnez un employé :</label>
@@ -22,7 +22,7 @@
       <button type="submit">Assigner la tâche</button>
     </form>
     <p>{{ infoMsg }}</p>
-  </main>
+  </div>
 </template>
 
 <script setup>
@@ -30,6 +30,7 @@ import { ref } from 'vue'
 import { assignTask } from '../_services/task.services'
 
 const { props } = defineProps(['taskList', 'employees'])
+
 const employeeAndTaskId = ref({
   employeeId: '',
   taskId: '',

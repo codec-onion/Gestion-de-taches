@@ -1,5 +1,5 @@
 <template>
-  <main>
+  <div>
     <form @submit.prevent="sendLogin">
       <div class="email">
         <label for="email">Identifiants</label>
@@ -11,7 +11,7 @@
       </div>
       <button type="submit">Se connecter</button>
     </form>
-  </main>
+  </div>
 </template>
 
 <script setup>
