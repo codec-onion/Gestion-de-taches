@@ -21,6 +21,7 @@ Axios.interceptors.response.use(
     if (error.response.status == 401) {
       localStorage.removeItem('token')
       router.push('/login')
+      return Promise.reject(error.response)
     } else {
       return Promise.reject(error.response)
     }

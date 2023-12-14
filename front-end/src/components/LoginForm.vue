@@ -1,6 +1,6 @@
 <template>
   <div>
-    <form @submit.prevent="sendLogin">
+    <form @submit.prevent="">
       <div class="email">
         <label for="email">Identifiants</label>
         <input type="email" id="email" v-model="user.email" />
@@ -9,20 +9,23 @@
         <label for="password">Mot de passe</label>
         <input type="password" id="password" v-model="user.password" />
       </div>
-      <button type="submit">Se connecter</button>
+      <button type="button" class="login" @click="sendLogin">Se connecter</button>
+      <button type="button" @click="sendRegister">S'enregistrer</button>
     </form>
+    <p>{{ errMsg }}</p>
   </div>
 </template>
 
 <script setup>
 import { ref } from 'vue'
 import router from '@/router'
-import { login } from '../_services/user.services'
+import { login, register } from '../_services/user.services'
 
 const user = ref({
   email: '',
   password: '',
 })
+const errMsg = ref('')
 
 const sendLogin = () => {
   login(user.value)
@@ -30,14 +33,19 @@ const sendLogin = () => {
       localStorage.setItem('token', res.data.token)
       router.push('/')
     })
-    .catch((error) => console.log(error.data.message))
+    .catch((error) => (errMsg.value = error.data.message))
 }
 
-// const login = () => {
-//   localStorage.setItem('token', 'je suis un token')
-//   console.log(user.value)
-//   router.push('/')
-// }
+const sendRegister = async () => {
+  try {
+    await register(user.value)
+    const res = await login(user.value)
+    localStorage.setItem('token', res.data.token)
+    router.push('/')
+  } catch (error) {
+    errMsg.value = error.data.message
+  }
+}
 </script>
 
 <style scoped>
@@ -49,5 +57,8 @@ form div {
   display: flex;
   justify-content: space-between;
   margin-bottom: 20px;
+}
+.login {
+  margin-right: 10px;
 }
 </style>
