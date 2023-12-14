@@ -1,5 +1,5 @@
 const checkTaskInfo = (task) => {
-  const wordingRegex = /^[a-zA-Z0-9À-ÿ\s]+\S$/
+  const wordingRegex = /^[a-zA-ZÀ-ÿ\s]+[^0-9\s]$/
   const wordingIsValid = wordingRegex.test(task.wording)
 
   const startTime = new Date(task.startTime)
@@ -8,7 +8,7 @@ const checkTaskInfo = (task) => {
   let response = ''
 
   if (!wordingIsValid) {
-    response += "Le libellé ne doit pas contenir de caractère spéciaux ou d'espace à la fin. "
+    response += "Le libellé ne doit pas contenir de caractères spéciaux, de chiffres ou d'espace à la fin. "
   }
   if (isNaN(startTime)) {
     response += "Le format de la date de début n'est pas valide. "

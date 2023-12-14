@@ -1,5 +1,5 @@
 <template>
-  <table v-if="taskList.length > 0">
+  <table v-if="!!taskList && taskList.length > 0">
     <thead>
       <th scope="col" @click="sortByWordingDisplay">
         Libellé
@@ -60,6 +60,16 @@ watch(taskList, (newValue) => {
   }
 })
 
+const deleteTaskEvent = async (e) => {
+  try {
+    await deleteTask(e.target.value)
+    const res = await getAllTasks()
+    taskList.value = res.data
+  } catch (error) {
+    console.log(error)
+  }
+}
+
 const sortByWordingDisplay = () => {
   const sorted = sortByWording(taskList.value)
   sortedTaskList.value = sorted.sortedTaskList
@@ -80,15 +90,6 @@ const sortByEndTimeDisplay = () => {
   sortOrderWording.value = sorted.sortOrderWording
   sortOrderStartTime.value = sorted.sortOrderStartTime
   sortOrderEndTime.value = sorted.sortOrderEndTime
-}
-
-const deleteTaskEvent = async (e) => {
-  try {
-    await deleteTask(e.target.value)
-    window.location.reload()
-  } catch (error) {
-    console.log(error)
-  }
 }
 </script>
 

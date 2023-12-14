@@ -15,7 +15,7 @@
       </div>
       <button type="submit">Créer une nouvelle tâche</button>
     </form>
-    {{ infoMsg }}
+    <p class="infoMsg">{{ infoMsg }}</p>
   </div>
 </template>
 
@@ -37,7 +37,12 @@ const send = () => {
     return (infoMsg.value = checkedTaskInfo)
   }
   createTask(task.value)
-    .then((res) => (infoMsg.value = res.data.message))
+    .then((res) => {
+      infoMsg.value = res.data.message
+      setTimeout(() => {
+        infoMsg.value = ''
+      }, 1000)
+    })
     .catch((error) => {
       infoMsg.value = error.data.message
     })
