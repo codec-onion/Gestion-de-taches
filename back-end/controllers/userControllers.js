@@ -17,6 +17,10 @@ const UserModel = require("../models/UserModel")
 //     .catch(error => res.status(500).json({ error }))
 // }
 
+exports.isLogged = (req, res, next) => {
+  return res.status(200).json({ message: "Vous êtes connecté" })
+}
+
 exports.login = (req, res, next) => {
   UserModel.findOne({ email: req.body.email })
     .then(user => {

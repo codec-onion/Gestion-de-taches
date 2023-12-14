@@ -1,10 +1,10 @@
 <template>
-  <div>
+  <div class="main">
     <form @submit.prevent="sendToServer">
       <div>
         <label for="employee">Sélectionnez un employé :</label>
         <select v-model="employeeAndTaskId.employeeId" id="employee">
-          <option value="" disabled>Choisissez un employé.e</option>
+          <option value="" disabled>Choisissez un employé</option>
           <option v-for="employee of employees" :key="employee._id" :value="employee._id">
             {{ employee.firstName + ' ' + employee.lastName }}
           </option>
@@ -30,6 +30,7 @@ import { ref } from 'vue'
 import { assignTask } from '../_services/task.services'
 
 const { props } = defineProps(['taskList', 'employees'])
+const { emit } = defineEmits()
 
 const employeeAndTaskId = ref({
   employeeId: '',
@@ -61,5 +62,8 @@ form div label {
 }
 #tache {
   width: 170px;
+}
+.main {
+  margin-block: 30px;
 }
 </style>

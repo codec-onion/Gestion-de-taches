@@ -8,13 +8,6 @@ exports.getAllTasks = (req, res, next) => {
     .catch(error => res.status(404).json(error))
 }
 
-exports.getAssignedTask = (req, res, next) => {
-  const employeeId = req.params.id
-  TaskModel.find({ employeeId: { $in: employeeId } })
-  .then((tasks) => res.status(200).json(tasks))
-  .catch((error) => res.status(500).json(error))
-}
-
 exports.createTask = (req, res, next) => {
   const checkedTaskInfo = checkTaskInfo(req.body)
   if(checkedTaskInfo.length > 0) {

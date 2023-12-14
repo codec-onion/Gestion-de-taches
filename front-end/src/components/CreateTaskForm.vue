@@ -22,6 +22,7 @@
 <script setup>
 import { ref } from 'vue'
 import { createTask } from '../_services/task.services'
+import checkTaskInfo from '../_utils/checkTaskHelpers'
 
 const task = ref({
   wording: '',
@@ -31,6 +32,10 @@ const task = ref({
 const infoMsg = ref('')
 
 const send = () => {
+  const checkedTaskInfo = checkTaskInfo(task)
+  if (checkedTaskInfo.length > 0) {
+    return (infoMsg = checkedTaskInfo)
+  }
   createTask(task.value)
     .then((res) => (infoMsg.value = res.data.message))
     .catch((error) => {

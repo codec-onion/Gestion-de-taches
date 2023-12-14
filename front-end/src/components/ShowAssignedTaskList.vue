@@ -1,5 +1,13 @@
 <template>
-  <table v-if="taskList.length > 0">
+  <h2>Voir les tâches assignées à un employé</h2>
+  <label for="employee">Sélectionnez un employé :</label>
+  <select v-model="employeeId" id="employee" @change="getTasksForEmployee">
+    <option value="" disabled>Choisissez un employé</option>
+    <option v-for="employee of employees" :key="employee._id" :value="employee._id">
+      {{ employee.firstName + ' ' + employee.lastName }}
+    </option>
+  </select>
+  <table v-if="taskListForEmployee.length > 0">
     <thead>
       <th scope="col" @click="sortByWordingDisplay">
         Libellé
@@ -7,16 +15,12 @@
       </th>
       <th scope="col" @click="sortByStartTimeDisplay">Début {{ sortOrderStartTime }}</th>
       <th scope="col" @click="sortByEndTimeDisplay">Fin {{ sortOrderEndTime }}</th>
-      <th scope="col">Supprimer</th>
     </thead>
     <template v-if="!sortedTaskList">
-      <tr v-for="task in taskList" :key="task._id" :class="task._id">
+      <tr v-for="task in taskListForEmployee" :key="task._id" :class="task._id">
         <td>{{ task.wording }}</td>
         <td>{{ task.startTime }}</td>
         <td>{{ task.endTime }}</td>
-        <td>
-          <button :value="task._id" @click="deleteTaskEvent($event)">X</button>
-        </td>
       </tr>
     </template>
     <template v-else>
@@ -24,66 +28,58 @@
         <td>{{ task.wording }}</td>
         <td>{{ task.startTime }}</td>
         <td>{{ task.endTime }}</td>
-        <td>
-          <button :value="task._id" @click="deleteTaskEvent($event)">X</button>
-        </td>
       </tr>
     </template>
   </table>
-  <p v-else>Pas encore de tâches créées. Vous pouvez en créer une en cliquant sur "Enregistrer une tâche".</p>
+  <p v-if="taskListForEmployee.length === 0">Pas de tâches assignées à cet employé.</p>
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
-import { getAllTasks, deleteTask } from '../_services/task.services'
+import { ref } from 'vue'
 import { sortByWording, sortByStartTime, sortByEndTime } from '../_utils/sortTaskHelpers'
 
-const taskList = ref([])
+const { taskList, employees } = defineProps(['taskList', 'employees'])
+const employeeId = ref('')
+const taskListForEmployee = ref([])
 const sortedTaskList = ref(null)
 const sortOrderWording = ref('')
 const sortOrderStartTime = ref('')
 const sortOrderEndTime = ref('')
 
-getAllTasks()
-  .then((res) => (taskList.value = res.data))
-  .catch((error) => console.log(error.data.message))
-
-watch(taskList, (newValue) => {
-  for (let task of newValue) {
-    task.startTime = task.startTime.split('T').join(' ')
-    task.endTime = task.endTime.split('T').join(' ')
-  }
-})
+const getTasksForEmployee = () => {
+  taskListForEmployee.value = taskList.filter((task) => task.employeeId.includes(employeeId.value))
+}
 
 const sortByWordingDisplay = () => {
-  const sorted = sortByWording(taskList.value)
+  const sorted = sortByWording(taskListForEmployee.value)
   sortedTaskList.value = sorted.sortedTaskList
   sortOrderWording.value = sorted.sortOrderWording
   sortOrderStartTime.value = sorted.sortOrderStartTime
   sortOrderEndTime.value = sorted.sortOrderEndTime
 }
 const sortByStartTimeDisplay = () => {
-  const sorted = sortByStartTime(taskList.value)
+  const sorted = sortByStartTime(taskListForEmployee.value)
   sortedTaskList.value = sorted.sortedTaskList
   sortOrderWording.value = sorted.sortOrderWording
   sortOrderStartTime.value = sorted.sortOrderStartTime
   sortOrderEndTime.value = sorted.sortOrderEndTime
 }
 const sortByEndTimeDisplay = () => {
-  const sorted = sortByEndTime(taskList.value)
+  const sorted = sortByEndTime(taskListForEmployee.value)
   sortedTaskList.value = sorted.sortedTaskList
   sortOrderWording.value = sorted.sortOrderWording
   sortOrderStartTime.value = sorted.sortOrderStartTime
   sortOrderEndTime.value = sorted.sortOrderEndTime
 }
-
-const deleteTaskEvent = (e) => {
-  deleteTask(e.target.value)
-  window.location.reload()
-}
 </script>
 
 <style scoped>
+h2 {
+  margin-block: 20px;
+}
+select {
+  margin-bottom: 20px;
+}
 table {
   margin-inline: auto;
   table-layout: fixed;
@@ -99,9 +95,5 @@ td {
 th {
   border-bottom: 2px solid purple;
   cursor: pointer;
-}
-th:last-child {
-  width: 90px;
-  cursor: auto;
 }
 </style>
