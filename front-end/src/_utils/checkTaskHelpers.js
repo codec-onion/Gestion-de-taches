@@ -1,5 +1,5 @@
 const checkTaskInfo = (task) => {
-  const wordingRegex = /^[a-zA-ZÀ-ÿ\s]+[^0-9\s]$/
+  const wordingRegex = /^[a-zA-ZÀ-ÿ\s]+[a-zA-ZÀ-ÿ]$/
   const wordingIsValid = wordingRegex.test(task.wording)
 
   const startTime = new Date(task.startTime)
