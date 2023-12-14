@@ -34,7 +34,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { onMounted, ref, watch } from 'vue'
 import { getAllTasks, deleteTask } from '../_services/task.services'
 import { sortByWording, sortByStartTime, sortByEndTime } from '../_utils/sortTaskHelpers'
 
@@ -44,9 +44,14 @@ const sortOrderWording = ref('')
 const sortOrderStartTime = ref('')
 const sortOrderEndTime = ref('')
 
-getAllTasks()
-  .then((res) => (taskList.value = res.data))
-  .catch((error) => console.log(error.data.message))
+onMounted(async () => {
+  try {
+    const res = await getAllTasks()
+    taskList.value = res.data
+  } catch (error) {
+    console.log(error)
+  }
+})
 
 watch(taskList, (newValue) => {
   for (let task of newValue) {
@@ -77,9 +82,13 @@ const sortByEndTimeDisplay = () => {
   sortOrderEndTime.value = sorted.sortOrderEndTime
 }
 
-const deleteTaskEvent = (e) => {
-  deleteTask(e.target.value)
-  window.location.reload()
+const deleteTaskEvent = async (e) => {
+  try {
+    await deleteTask(e.target.value)
+    window.location.reload()
+  } catch (error) {
+    console.log(error)
+  }
 }
 </script>
 

@@ -30,7 +30,6 @@ import { ref } from 'vue'
 import { assignTask } from '../_services/task.services'
 
 const { props } = defineProps(['taskList', 'employees'])
-const { emit } = defineEmits()
 
 const employeeAndTaskId = ref({
   employeeId: '',
@@ -38,10 +37,16 @@ const employeeAndTaskId = ref({
 })
 const infoMsg = ref('')
 
-const sendToServer = () => {
-  assignTask(employeeAndTaskId.value)
-    .then((res) => (infoMsg.value = res.data.message))
-    .catch((error) => (infoMsg.value = error.data.message))
+const sendToServer = async () => {
+  try {
+    const res = await assignTask(employeeAndTaskId.value)
+    infoMsg.value = res.data.message
+    setTimeout(() => {
+      window.location.reload()
+    }, 1000)
+  } catch (error) {
+    infoMsg.value = error.data.message
+  }
 }
 </script>
 

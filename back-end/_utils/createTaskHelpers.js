@@ -7,7 +7,7 @@ const checkTaskInfo = (task) => {
   
   let response = ""
   
-  if(!wordingIsValid){
+  if (!wordingIsValid){
     response += "Le libellé ne doit pas contenir de caractère spéciaux ou d'espace à la fin. "
   }
   if (isNaN(startTime)) {

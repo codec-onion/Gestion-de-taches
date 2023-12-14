@@ -35,7 +35,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, watch } from 'vue'
 import { sortByWording, sortByStartTime, sortByEndTime } from '../_utils/sortTaskHelpers'
 
 const { taskList, employees } = defineProps(['taskList', 'employees'])
@@ -45,6 +45,11 @@ const sortedTaskList = ref(null)
 const sortOrderWording = ref('')
 const sortOrderStartTime = ref('')
 const sortOrderEndTime = ref('')
+
+for (let task of taskList) {
+  task.startTime = task.startTime.split('T').join(' ')
+  task.endTime = task.endTime.split('T').join(' ')
+}
 
 const getTasksForEmployee = () => {
   taskListForEmployee.value = taskList.filter((task) => task.employeeId.includes(employeeId.value))

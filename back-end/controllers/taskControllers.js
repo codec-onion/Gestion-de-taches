@@ -1,11 +1,12 @@
 const TaskModel = require("../models/TaskModel")
-const { checkTaskInfo } = require("../_utils/helpersCreateTask")
-const { filterDateSameDay, checkTaskOverlap, checkTotalTaskTime } = require("../_utils/helpersAssignTask")
+const EmployeeModel = require("../models/EmployeeModel")
+const { checkTaskInfo } = require("../_utils/createTaskHelpers")
+const { filterDateSameDay, checkTaskOverlap, checkTotalTaskTime } = require("../_utils/assignTaskHelpers")
 
 exports.getAllTasks = (req, res, next) => {
   TaskModel.find()
     .then(tasks => res.status(200).json(tasks))
-    .catch(error => res.status(404).json(error))
+    .catch(error => res.status(500).json(error))
 }
 
 exports.createTask = (req, res, next) => {
@@ -18,16 +19,20 @@ exports.createTask = (req, res, next) => {
     employeeId: []
   })
   task.save()
-    .then(() => res.status(200).json({message: "Tâche créée avec succès."}))
+    .then(() => res.status(201).json({message: "Tâche créée avec succès."}))
     .catch((error) => res.status(500).json(error))
 }
 
 exports.assignTask = async (req, res, next) => {
 
   try {
-    const currentEmployeeId = req.body.employeeId
-    const taskToBeAdded = await TaskModel.findOne({ _id: req.body.taskId })
-    const assignedTasks = await TaskModel.find({ employeeId: { $in: currentEmployeeId } })
+    const employeeId = req.body.employeeId
+    const taskId = req.body.taskId
+    
+    await EmployeeModel.findOne({ _id: employeeId })
+
+    const taskToBeAdded = await TaskModel.findOne({ _id: taskId })
+    const assignedTasks = await TaskModel.find({ employeeId: { $in: employeeId } })
 
     const taskAlreadyAssigned = assignedTasks.find(task => task.id === taskToBeAdded.id)
     if (!!taskAlreadyAssigned) {
@@ -47,11 +52,14 @@ exports.assignTask = async (req, res, next) => {
       })
     }
 
-    taskToBeAdded.employeeId.push(currentEmployeeId)
-    await TaskModel.updateOne({ _id: req.body.taskId }, { employeeId: taskToBeAdded.employeeId })
-
+    taskToBeAdded.employeeId.push(employeeId)
+    
+    await TaskModel.updateOne({ _id: taskId }, { employeeId: taskToBeAdded.employeeId })
     return res.status(200).json({ message: "Tâche assignée." })
   } catch (error) {
+    if(!!error.model) {
+      return res.status(400).json({ message: "Employé ou tâche introuvable." })
+    }
     return res.status(500).json(error)
   }
 }
