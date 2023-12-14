@@ -32,9 +32,9 @@ const task = ref({
 const infoMsg = ref('')
 
 const send = () => {
-  const checkedTaskInfo = checkTaskInfo(task)
+  const checkedTaskInfo = checkTaskInfo(task.value)
   if (checkedTaskInfo.length > 0) {
-    return (infoMsg = checkedTaskInfo)
+    return (infoMsg.value = checkedTaskInfo)
   }
   createTask(task.value)
     .then((res) => (infoMsg.value = res.data.message))
