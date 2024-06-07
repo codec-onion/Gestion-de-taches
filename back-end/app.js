@@ -6,7 +6,7 @@ const employeeRoutes = require("./routes/employeeRoutes")
 const taskRoutes = require("./routes/taskRoutes")
 
 mongoose
-  .connect(`${process.env.MONGODB_URL}`)
+  .connect(process.env.MONGODB_URL)
   .then(() => console.log('Connexion à MongoDB réussie !'))
   .catch((error) => console.log('Connexion à MongoDB échouée !', error, process.env.MONGODB_URL))
 
